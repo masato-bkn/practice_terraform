@@ -15,9 +15,8 @@ terraform {
 
 module "ec2" {
   source          = "./modules/ec2"
-  name            = "sample_ec2-2"
-  subnet_public_a = module.vpc.sample-subnet-1a
-  web_sg          = module.security_group.web_sg
+  public_subnet = module.vpc.sample-subnet-1a
+  security_group          = module.security_group.web_sg
   key_name        = "sample-terraform"
   public_key      = "sample-terraform.pub"
 }

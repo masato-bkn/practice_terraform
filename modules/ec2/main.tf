@@ -35,10 +35,10 @@ data "aws_ami" "sample_ami" {
 
 resource "aws_instance" "web" {
   ami           = data.aws_ami.sample_ami.id
-  instance_type = var.instance_type
-  subnet_id     = var.subnet_public_a.id
+  instance_type = "t2.micro"
+  subnet_id     = var.public_subnet.id
   vpc_security_group_ids = [
-    var.web_sg.id
+    var.security_group.id
   ]
   key_name                    = aws_key_pair.sample_key_pair.id
   associate_public_ip_address = true
@@ -57,10 +57,10 @@ resource "aws_instance" "web" {
 
 resource "aws_instance" "web-2" {
   ami           = data.aws_ami.sample_ami.id
-  instance_type = var.instance_type
-  subnet_id     = var.subnet_public_a.id
+  instance_type = "t2.micro"
+  subnet_id     = var.public_subnet.id
   vpc_security_group_ids = [
-    var.web_sg.id
+    var.security_group.id
   ]
   key_name                    = aws_key_pair.sample_key_pair.id
   associate_public_ip_address = true
@@ -71,7 +71,7 @@ resource "aws_instance" "web-2" {
     sudo yum install httpd -y
     sudo service httpd start
   EOF
-  
+
   tags = {
     Name = "web-2"
   }
