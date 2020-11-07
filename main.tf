@@ -14,11 +14,11 @@ terraform {
 }
 
 module "ec2" {
-  source          = "./modules/ec2"
-  public_subnet = module.vpc.sample-subnet-1a
-  security_group          = module.security_group.web_sg
-  key_name        = "sample-terraform"
-  public_key      = "sample-terraform.pub"
+  source         = "./modules/ec2"
+  public_subnet  = module.vpc.sample-subnet-1a
+  security_group = module.security_group.web_sg
+  key_name       = "sample-terraform"
+  public_key     = "sample-terraform.pub"
 }
 
 module "vpc" {
@@ -50,4 +50,9 @@ module "alb" {
   ]
   vpc_id    = module.vpc.sample-vpc.id
   target_id = module.ec2.sample-ec2.id
+}
+
+module "route53" {
+  source     = "./modules/route53"
+  target_alb = module.alb.sample_alb
 }
