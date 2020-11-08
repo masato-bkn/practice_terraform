@@ -23,7 +23,26 @@ resource "aws_lb_listener" "sample_alb_listener" {
   protocol          = "HTTP"
 
   default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_alb.sample_alb.arn
+  certificate_arn   = var.target_acm.arn
+
+  port     = "443"
+  protocol = "HTTPS"
+
+  default_action {
     target_group_arn = aws_alb_target_group.sample_alb_tg.arn
     type             = "forward"
+
   }
 }

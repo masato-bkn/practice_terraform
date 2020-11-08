@@ -48,11 +48,19 @@ module "alb" {
     module.vpc.sample-subnet-1a.id,
     module.vpc.sample-subnet-1c.id
   ]
-  vpc_id    = module.vpc.sample-vpc.id
-  target_id = module.ec2.sample-ec2.id
+  vpc_id     = module.vpc.sample-vpc.id
+  target_id  = module.ec2.sample-ec2.id
+  target_acm = module.acm.sample_acm
 }
 
 module "route53" {
   source     = "./modules/route53"
   target_alb = module.alb.sample_alb
+  target_acm = module.acm.sample_acm
+}
+
+module "acm" {
+  source             = "./modules/acm"
+  domain             = module.route53.domain
+  aws_route53_record = module.route53.aws_route53_record
 }
